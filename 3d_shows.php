@@ -143,7 +143,7 @@ function threedShowPublicationMetaBox()
 {
 	global $showBox, $post;
 	// Use nonce for verification
-	echo '<input type="hidden" name="mytheme_meta_box_nonce" value="', wp_create_nonce(basename(__FILE__)), '" />';
+	echo '<input type="hidden" name="threed_show_meta_box_nonce" value="', wp_create_nonce(basename(__FILE__)), '" />';
 	echo '<table class="form-table">';
 	foreach ($showBox['fields'] as $field) {
 		// get current post meta data
@@ -235,7 +235,7 @@ function threedShowAddMetaBoxes() {
 function threedShowSaveMeta($post_id) {
 	global $showBox;
 	// verify nonce
-	if (!wp_verify_nonce($_POST['mytheme_meta_box_nonce'], basename(__FILE__))) {
+	if (!isset($_POST['threed_show_meta_box_nonce']) || !wp_verify_nonce($_POST['threed_show_meta_box_nonce'], basename(__FILE__))) {
 		return $post_id;
 	}
 	// check autosave
