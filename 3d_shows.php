@@ -285,4 +285,32 @@ function threedThumbnailColumnWidth()
 		</style>';
 }
 
+function threedRenderSchedule()
+{
+	$args = array('post_type' => 'threed_show', 
+		          'post_status' => 'publish', 
+				  'meta_key' => 'wcl_year', 
+				  'nopaging' => true,
+				  'orderby' => 'meta_value_num');
+	$loop = new WP_Query($args);
+
+	$days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+
+	print '<table>';
+	print '<tr><th>Time</th>';
+
+	foreach ($days as $day) {
+		print "<th>$day</th>";
+	}
+	print '</tr>';
+	print '</table>';
+
+	while ($loop->have_posts()) {
+
+	}
+
+}
+
+add_shortcode('threed_shows', 'threedRenderSchedule');
+
 ?>
