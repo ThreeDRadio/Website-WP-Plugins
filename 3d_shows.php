@@ -47,14 +47,21 @@ add_action('admin_head', 'threedThumbnailColumnWidth');
 
 function threedFriendlyTime($time)
 {
-	$time = explode(':', $time);
-	$m = ($time[0] >= 12) ? 'pm' : 'am';
-	if ($time[0] == 0)
-		$time[0] = 12;
-	else if ($time[0] > 12)
-		$time[0] = $time[0] - 12;
+	//$time = explode(':', $time);
+	//$m = ($time[0] >= 12) ? 'pm' : 'am';
+	//if ($time[0] == 0)
+	//	$time[0] = 12;
+	//else if ($time[0] > 12)
+	//	$time[0] = $time[0] - 12;
 
-	return $time[0] . ':' . $time[1] . $m;
+	//return $time[0] . ':' . $time[1] . $m;
+	return strftime('%R', $time);
+}
+
+function threedGetDay($index)
+{
+	$days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+	return $days[$index];
 }
 
 function threedDisplayPostThumbnailColumn($col, $id)
@@ -68,7 +75,7 @@ function threedDisplayPostThumbnailColumn($col, $id)
 			echo "not supported";
 		break;
 	case 'threed_show_info':
-		echo get_post_meta($id, 'threed_show_day', true);
+		echo threedGetDay(get_post_meta($id, 'threed_show_day', true));
 		echo ', ' . threedFriendlyTime(get_post_meta($id, 'threed_show_start', true)); 
 		echo ' to ' .  threedFriendlyTime(get_post_meta($id, 'threed_show_end', true)); 
 		echo '<br>';
@@ -111,7 +118,7 @@ $showBox = array (
 			'desc' => '',
 			'id' => 'threed_show_day',
 			'type' => 'select',
-			'options' => array ('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'),
+			'options' => array (0 => 'Monday', 1 => 'Tuesday', 2 => 'Wednesday', 3 => 'Thursday', 4 => 'Friday', 5 => 'Saturday', 6 =>'Sunday'),
 			'std' => ''
 		),
 		array(
@@ -160,8 +167,8 @@ function threedShowPublicationMetaBox()
 			break;
 		case 'select':
 			echo '<select name="', $field['id'], '" id="', $field['id'], '">';
-			foreach ($field['options'] as $option) {
-				echo '<option ', $meta == $option ? ' selected="selected"' : '', '>', $option, '</option>';
+			foreach ($field['options'] as $key => $value) {
+				echo '<option value="', $key, '" ', $meta == $key ? ' selected="selected"' : '', '>', $value, '</option>';
 			}
 			echo '</select>';
 			break;
@@ -179,16 +186,13 @@ function threedShowPublicationMetaBox()
 
 		case 'time':
 			echo '<select name="', $field['id'], '" id="', $field['id'], '">';
-			for ($hour=0; $hour <24; $hour++)
+			$startTime = 6*60*60;
+			$endTime = 27*60*60;
+			$increment = 30*60;
+
+			for ($i = $startTime; $i <= $endTime; $i+=$increment)
 			{
-				$displayHour = ($hour > 12) ? $hour - 12 : $hour;
-				if ($hour == 0)
-				{
-					$displayHour = "12";
-				}
-				$displayMeridian = ($hour >= 12) ? 'pm' : 'am';
-				echo '<option value="' . $hour . ':00"' , $meta == $hour . ":00" ? ' selected="selected"' : '', '>', $displayHour, ':00', $displayMeridian, '</option>';
-				echo '<option value="' . $hour . ':30"', $meta == $hour . ":30" ? ' selected="selected"' : '', '>', $displayHour, ':30', $displayMeridian, '</option>';
+				echo '<option value="' . $i . '"' , $meta == $i ? ' selected="selected"' : '', '>', strftime("%r", $i) , '</option>';
 			}
 			echo '</select>';
 			break;
@@ -287,28 +291,84 @@ function threedThumbnailColumnWidth()
 
 function threedRenderSchedule()
 {
-	$args = array('post_type' => 'threed_show', 
-		          'post_status' => 'publish', 
-				  'meta_key' => 'wcl_year', 
-				  'nopaging' => true,
-				  'orderby' => 'meta_value_num');
-	$loop = new WP_Query($args);
+
+	echo '
+		<style>
+		.threed_schedule td {
+			border-width: 1px;
+			border-style: solid;
+			width: 14.2%;
+} 
+
+.threed_schedule p {
+	margin: 0px;
+}
+.schedule_show {
+	font-weight: bold;
+	padding-bottom: 3px;
+	margin: 0px;
+	padding: 0px;
+	padding-left: 0.5em;
+	font-size: 8pt;
+}
+.schedule_time {
+	font-size: 7pt;
+	margin: 0px;
+	padding: 0px;
+	padding-left: 2em;
+}
+</style>';
+
+	print '<table class="threed_schedule">';
+	print '<tr>';
 
 	$days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-
-	print '<table>';
-	print '<tr><th>Time</th>';
-
 	foreach ($days as $day) {
 		print "<th>$day</th>";
 	}
 	print '</tr>';
-	print '</table>';
 
-	while ($loop->have_posts()) {
+	$startTime = 6*60*60;
+	$endTime = 26*60*60 + 30*60;
+	$increment = 30*60;
 
+	for ($i=$startTime; $i <= $endTime; $i += $increment)
+	{
+		$friendly = strftime("%R", $i);
+
+		$args = array('post_type' => 'threed_show', 
+			          'post_status' => 'publish', 
+			          'meta_key' => 'threed_show_day', 
+			          'nopaging' => true,
+					  'orderby' => 'meta_value_num',
+					  'order' => 'asc',
+					  'meta_query' => array(array(
+						                    'key' => 'threed_show_start',
+											'value' => $i,
+											'compare' => '='
+										))
+				  );
+
+		$loop = new WP_Query($args);
+
+		echo '<tr>';
+
+
+		while ($loop->have_posts())
+		{
+			$loop->the_post();
+			$blocks = get_post_meta(get_the_ID(), 'threed_show_end', true) - get_post_meta(get_the_ID(), 'threed_show_start', true);
+			$blocks /= $increment;
+			echo '<td rowspan="' . $blocks . '"><p class="schedule_show"><a href="' . get_permalink(get_the_ID()) . '">' . get_the_title() . '</a></p>';
+			echo '<p class="schedule_time">' . threedFriendlyTime( get_post_meta(get_the_ID(), 'threed_show_start', true)) . ' - ' . 
+				threedFriendlyTime(get_post_meta(get_the_ID(), 'threed_show_end', true)) . '</p>';
+			echo '<p class="schedule_time">' . get_post_meta(get_the_ID(), 'threed_show_hosts', true). '</p>';
+			echo '</td>';
+		}
+		echo '</tr>';
 	}
 
+	print '</table>';
 }
 
 add_shortcode('threed_shows', 'threedRenderSchedule');
