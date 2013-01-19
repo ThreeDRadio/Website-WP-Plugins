@@ -294,6 +294,9 @@ function threedRenderSchedule()
 
 	echo '
 		<style>
+		.threed_schedule {
+			width: 100%;
+}
 		.threed_schedule td {
 			border-width: 1px;
 			border-style: solid;
