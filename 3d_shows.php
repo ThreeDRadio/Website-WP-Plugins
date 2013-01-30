@@ -12,6 +12,7 @@ Version: 0.1
 Author URI: http://www.20papercups.net
 */
 
+require("NowPlaying.php");
 
 // Let's create the custom post type for a publication
 add_action('init', 'threedCreateShowType');
@@ -55,7 +56,7 @@ function threedFriendlyTime($time)
 	//	$time[0] = $time[0] - 12;
 
 	//return $time[0] . ':' . $time[1] . $m;
-	return strftime('%R', $time);
+	return strftime('%k:%M', $time);
 }
 
 function threedGetDay($index)
@@ -337,7 +338,7 @@ function threedRenderSchedule()
 
 	for ($i=$startTime; $i <= $endTime; $i += $increment)
 	{
-		$friendly = strftime("%R", $i);
+		$friendly = strftime("%k:%M", $i);
 
 		$args = array('post_type' => 'threed_show', 
 			          'post_status' => 'publish', 
