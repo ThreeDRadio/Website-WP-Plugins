@@ -56,7 +56,14 @@ function threedFriendlyTime($time)
 	//	$time[0] = $time[0] - 12;
 
 	//return $time[0] . ':' . $time[1] . $m;
-	return strftime('%k:%M', $time);
+	$val = strftime('%k:%M', $time);
+
+	if (empty($val)) {
+		$val = strftime('%I:%M%p', $time);
+	}
+
+	//return $time;
+	return $val;
 }
 
 function threedGetDay($index)
@@ -302,6 +309,11 @@ function threedRenderSchedule()
 			border-width: 1px;
 			border-style: solid;
 			width: 14.2%;
+			height: 80px;
+
+			.threed_schedule table {
+				width: 100%;
+}
 } 
 
 .threed_schedule p {
@@ -323,7 +335,7 @@ function threedRenderSchedule()
 }
 </style>';
 
-	print '<table class="threed_schedule">';
+	print '<table class="threed_schedule" width="100%">';
 	print '<tr>';
 
 	$days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
