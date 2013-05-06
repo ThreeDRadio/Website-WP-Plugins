@@ -51,7 +51,11 @@ class NowPlaying extends WP_Widget {
 
 		extract($args);
 		echo $before_widget;
-		echo $before_title . 'Now Playing:' . $after_title;
+		echo $before_title;
+		echo '<img src="';
+		bloginfo('template_directory');
+		echo '/images/NowPlaying.png" alt="Now Playing" class="threed-sidebar-heading"/>';
+	   	echo $after_title;
 
 	echo '
 		<style>
