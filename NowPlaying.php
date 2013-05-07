@@ -76,8 +76,15 @@ class NowPlaying extends WP_Widget {
 	padding-bottom: 3px;
 	margin: 0px;
 	padding: 0px;
-	padding-left: 0.5em;
-	font-size: 8pt;
+	text-align: center;
+}
+.schedule_show a {
+	color: #333;
+	text-decoration: none;
+
+}
+.schedule_show a:hover {
+	color: #0f0;
 }
 .schedule_time {
 	font-size: 7pt;
@@ -85,17 +92,41 @@ class NowPlaying extends WP_Widget {
 	padding: 0px;
 	padding-left: 2em;
 }
+
+.now_playing {
+	background-color: #ccc;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 35px;
+	padding-bottom: 5px;
+	margin-left: 12px;
+	width: 230px;
+	border-radius: 5px;
+	text-align: center;
+	font-size: 9pt;
+	position: relative;
+	top: -24px;
+	z-index: 0;
+}
 </style>';
 
 		while ($ploop->have_posts())
 		{
-
+			echo '<div class="now_playing">';
 			$ploop->the_post();
-			echo '<p class="schedule_show"><a href="' . get_permalink(get_the_ID()) . '">' . get_the_title() . '</a></p>';
-			echo the_post_thumbnail('admin-list-thumb');
-			echo '<p class="schedule_time">' . threedFriendlyTime( get_post_meta(get_the_ID(), 'threed_show_start', true)) . ' - ' . 
-				threedFriendlyTime(get_post_meta(get_the_ID(), 'threed_show_end', true)) . '</p>';
-			echo '<p class="schedule_time">' . get_post_meta(get_the_ID(), 'threed_show_hosts', true). '</p>';
+			if (has_post_thumbnail(get_the_ID())) {
+				echo the_post_thumbnail('threed-now-playing');
+			}
+			else {
+				echo '<img src="';
+				bloginfo('template_directory');
+				echo '/images/NoImage.png" alt="No Show Art"/>';
+			}
+			echo '<span class="schedule_show"><a href="' . get_permalink(get_the_ID()) . '">' . get_the_title() . '</a></span>';
+			echo ' with ' . get_post_meta(get_the_ID(), 'threed_show_hosts', true);
+			echo '</div>';
+			//echo '<p class="schedule_time">' . threedFriendlyTime( get_post_meta(get_the_ID(), 'threed_show_start', true)) . ' - ' . 
+			//	threedFriendlyTime(get_post_meta(get_the_ID(), 'threed_show_end', true)) . '</p>';
 		}
 		echo $after_widget;
 	}

@@ -31,6 +31,7 @@ add_action('admin_print_styles', 'threedShowAdminStyles');
 
 // get images to show!
 add_image_size('admin-list-thumb', 60, 60, false);
+add_image_size('threed-now-playing', 230, 230, false);
 add_filter('manage_threed_show_posts_columns', 'threedAddPostThumbnailColumn', 5);
 function threedAddPostThumbnailColumn($cols)
 {
