@@ -13,6 +13,7 @@ Author URI: http://www.20papercups.net
 */
 
 require("NowPlaying.php");
+require("ListenNow.php");
 
 // Let's create the custom post type for a publication
 add_action('init', 'threedCreateShowType');

@@ -57,59 +57,6 @@ class NowPlaying extends WP_Widget {
 		echo '/images/NowPlaying.png" alt="Now Playing" class="threed-sidebar-heading"/>';
 	   	echo $after_title;
 
-	echo '
-		<style>
-		.threed_schedule {
-			width: 100%;
-}
-		.threed_schedule td {
-			border-width: 1px;
-			border-style: solid;
-			width: 14.2%;
-} 
-
-.threed_schedule p {
-	margin: 0px;
-}
-.schedule_show {
-	font-weight: bold;
-	padding-bottom: 3px;
-	margin: 0px;
-	padding: 0px;
-	text-align: center;
-}
-.schedule_show a {
-	color: #333;
-	text-decoration: none;
-
-}
-.schedule_show a:hover {
-	color: #0f0;
-}
-.schedule_time {
-	font-size: 7pt;
-	margin: 0px;
-	padding: 0px;
-	padding-left: 2em;
-}
-
-.now_playing {
-	background-color: #ccc;
-	padding-left: 5px;
-	padding-right: 5px;
-	padding-top: 35px;
-	padding-bottom: 5px;
-	margin-left: 12px;
-	width: 230px;
-	border-radius: 5px;
-	text-align: center;
-	font-size: 9pt;
-	position: relative;
-	top: -24px;
-	z-index: 0;
-}
-</style>';
-
 		while ($ploop->have_posts())
 		{
 			echo '<div class="now_playing">';
