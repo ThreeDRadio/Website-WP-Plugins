@@ -18,6 +18,7 @@ require("FeatureWidget.php");
 add_action('init', 'ThreeDCreateFeatureType');
 add_action('add_meta_boxes', 'ThreeDFeatureAddMetaBoxes');
 add_action('save_post', 'ThreeDFeatureSaveMeta');
+add_image_size('threed-feature-thumb', 68, 68, false);
 
 $featureBox = array (
 	'id' => 'threed_feature_meta',
@@ -31,7 +32,7 @@ $featureBox = array (
 			'desc' => '',
 			'id' => 'threed_feature_type',
 			'type' => 'select',
-			'options' => array (0 => 'Feature of the Week', 1 => 'Album of the Week'),
+			'options' => array (2 => 'Feature of the Week', 1 => 'Album of the Week'),
 			'std' => ''
 		),
 		array(
