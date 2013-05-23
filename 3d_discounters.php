@@ -42,6 +42,34 @@ add_image_size('admin-list-thumb', 60, 60, false);
 //}
 
 
+function add_discounter_taxonomies() {
+	// Add new "Locations" taxonomy to Posts
+	register_taxonomy('threed_discounter_category', 'threed_discounter', array(
+		// Hierarchical taxonomy (like categories)
+		'hierarchical' => true,
+		// This array of options controls the labels displayed in the WordPress Admin UI
+		'labels' => array(
+			'name' => _x( 'Discounter Category', 'taxonomy general name' ),
+			'singular_name' => _x( 'Discounter Category', 'taxonomy singular name' ),
+			'search_items' =>  __( 'Search Categories' ),
+			'all_items' => __( 'All Categories' ),
+			'parent_item' => __( 'Parent Category' ),
+			'parent_item_colon' => __( 'Parent Category: ' ),
+			'edit_item' => __( 'Edit Category' ),
+			'update_item' => __( 'Update Category' ),
+			'add_new_item' => __( 'Add New Category' ),
+			'new_item_name' => __( 'New Category Name' ),
+			'menu_name' => __( 'Discounter Categories' ),
+		),
+		// Control the slugs used for this taxonomy
+		'rewrite' => array(
+			'slug' => 'locations', // This controls the base slug that will display before each term
+			'with_front' => false, // Don't display the category base before "/locations/"
+			'hierarchical' => true // This will allow URL's like "/locations/boston/cambridge/"
+		),
+	));
+}
+add_action( 'init', 'add_discounter_taxonomies', 0 );
 
 
 function threedDisplayDiscounterThumbnailColumn($col, $id)
@@ -79,6 +107,13 @@ $discounterBox = array (
 	'priority' => 'high',
 	'fields' => array (
 		array(
+			'name' => 'Discount Offered',
+			'desc' => '',
+			'id' => 'threed_discounter_discount',
+			'type' => 'textarea',
+			'std' => ''
+		),
+		array(
 			'name' => 'Address 1',
 			'desc' => '',
 			'id' => 'threed_discounter_address1',
@@ -110,6 +145,13 @@ $discounterBox = array (
 			'name' => 'Email Address',
 			'desc' => '',
 			'id' => 'threed_discounter_email',
+			'type' => 'text',
+			'std' => ''
+		),
+		array(
+			'name' => 'Phone Number',
+			'desc' => '',
+			'id' => 'threed_discounter_phone',
 			'type' => 'text',
 			'std' => ''
 		)
