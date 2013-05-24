@@ -39,3 +39,24 @@ function ThreeDCreateDepthchargeType() {
 	);
 }
 
+
+function threed_depthcharge_shortcode( $atts , $content=null ) {
+
+		$args = array('post_type' => 'threed_depthcharge', 
+			          'post_status' => 'publish', 
+			          'nopaging' => true,
+					  'orderby' => 'date',
+					  'order' => 'asc',
+				  );
+
+		$albumloop = new WP_Query($args);
+
+		while ($albumloop->have_posts())
+		{
+			$albumloop->the_post();
+			echo '<h2>' . get_the_title() . '</h2>';
+		}
+
+}
+add_shortcode('depthcharge', 'threed_depthcharge_shortcode');
+
