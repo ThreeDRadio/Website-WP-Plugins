@@ -16,6 +16,7 @@ Author URI: http://www.20papercups.net
 // Let's create the custom post type for a publication
 add_action('init', 'ThreeDCreateDepthchargeType');
 
+add_image_size('threed-depthcharge-image', 230, 230, false);
 
 function ThreeDCreateDepthchargeType() {
 	register_post_type('threed_depthcharge',
@@ -42,6 +43,7 @@ function ThreeDCreateDepthchargeType() {
 
 function threed_depthcharge_shortcode( $atts , $content=null ) {
 
+		$r = "";
 		$args = array('post_type' => 'threed_depthcharge', 
 			          'post_status' => 'publish', 
 			          'nopaging' => true,
@@ -54,9 +56,13 @@ function threed_depthcharge_shortcode( $atts , $content=null ) {
 		while ($albumloop->have_posts())
 		{
 			$albumloop->the_post();
-			echo '<h2>' . get_the_title() . '</h2>';
+			$r .= '<h2>' . get_the_title() . '</h2>';
+			$r .= '<div class="depthcharge_release">';
+			$r .= the_post_thumbnail('threed-depthcharge-image');
+			$r .= '</div>';
 		}
 
+		return $r;
 }
 add_shortcode('depthcharge', 'threed_depthcharge_shortcode');
 
