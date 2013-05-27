@@ -48,17 +48,23 @@ function threed_depthcharge_shortcode( $atts , $content=null ) {
 			          'post_status' => 'publish', 
 			          'nopaging' => true,
 					  'orderby' => 'date',
-					  'order' => 'asc',
+					  'order' => 'desc',
 				  );
 
 		$albumloop = new WP_Query($args);
+
 
 		while ($albumloop->have_posts())
 		{
 			$albumloop->the_post();
 			$r .= '<h2>' . get_the_title() . '</h2>';
 			$r .= '<div class="depthcharge_release">';
-			$r .= the_post_thumbnail('threed-depthcharge-image');
+			$r .= '<div class="depthcharge_thumbnail">';
+			$r .= get_the_post_thumbnail(get_the_ID(), 'threed-depthcharge-image');
+			$r .= '</div>';
+			$r .= '<div class="depthcharge_track_listing">';
+			$r .= get_the_content(get_the_ID());
+			$r .= '</div>';
 			$r .= '</div>';
 		}
 
