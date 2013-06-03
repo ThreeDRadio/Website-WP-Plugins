@@ -47,6 +47,54 @@ function threedAddPostThumbnailColumn($cols)
 add_action('manage_posts_custom_column', 'threedDisplayPostThumbnailColumn', 5, 2);
 add_action('admin_head', 'threedThumbnailColumnWidth');
 
+function getCurrentShow() {
+	$currentTime = time();
+	$tz = 'Australia/Adelaide';
+	$timezone = new DateTimeZone($tz);
+	$dt = new DateTime();
+	$dt->setTimestamp($currentTime);
+	$dt->setTimeZone($timezone);
+
+	$time = $dt->format('U');
+
+	$day = $dt->format('N') - 1;
+	$days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+	$secondsSinceMidnight = $dt->format('G')*60*60 + $dt->format('i') * 60 + $dt->format('s');
+
+	$qargs = array('post_type' => 'threed_show', 
+		'post_status' => 'publish', 
+		'meta_key' => 'threed_show_day', 
+		'nopaging' => true,
+		'orderby' => 'meta_value_num',
+		'order' => 'asc',
+		'meta_query' => array(
+			'relation' => 'AND',
+			array(
+				'key' => 'threed_show_start',
+				'value' => $secondsSinceMidnight,
+				'compare' => '<='
+			),
+			array(
+				'key' => 'threed_show_end',
+				'value' => $secondsSinceMidnight,
+				'compare' => '>='
+			),
+			array(
+				'key' => 'threed_show_day',
+				'value' => $day,
+				'compare' => '='
+			)
+		)
+	);
+
+	$ploop = new WP_Query($qargs);
+
+	while ($ploop->have_posts())
+	{
+		$ploop->the_post();
+		return get_the_ID();
+	}
+}
 
 function threedFriendlyTime($time)
 {
@@ -335,6 +383,9 @@ function threedRenderSchedule()
 	padding: 0px;
 	padding-left: 2em;
 }
+.schedule_now {
+	background-color: #cfc;
+}
 </style>';
 
 	print '<table class="threed_schedule" width="100%">';
@@ -350,6 +401,9 @@ function threedRenderSchedule()
 	$endTime = 26*60*60 + 30*60;
 	$increment = 30*60;
 
+	$currentShow = getCurrentShow();
+
+	echo $currentShow;
 	for ($i=$startTime; $i <= $endTime; $i += $increment)
 	{
 		$friendly = strftime("%k:%M", $i);
@@ -377,7 +431,12 @@ function threedRenderSchedule()
 			$loop->the_post();
 			$blocks = get_post_meta(get_the_ID(), 'threed_show_end', true) - get_post_meta(get_the_ID(), 'threed_show_start', true);
 			$blocks /= $increment;
-			echo '<td rowspan="' . $blocks . '"><p class="schedule_show"><a href="' . get_permalink(get_the_ID()) . '">' . get_the_title() . '</a></p>';
+			if ($currentShow == get_the_ID()) {
+			echo '<td class="schedule_now" rowspan="' . $blocks . '"><p class="schedule_show"><a href="' . get_permalink(get_the_ID()) . '">' . get_the_title() . '</a></p>';
+			}
+			else {
+				echo '<td rowspan="' . $blocks . '"><p class="schedule_show"><a href="' . get_permalink(get_the_ID()) . '">' . get_the_title() . '</a></p>';
+			}
 			echo '<p class="schedule_time">' . threedFriendlyTime( get_post_meta(get_the_ID(), 'threed_show_start', true)) . ' - ' . 
 				threedFriendlyTime(get_post_meta(get_the_ID(), 'threed_show_end', true)) . '</p>';
 			echo '<p class="schedule_time">' . get_post_meta(get_the_ID(), 'threed_show_hosts', true). '</p>';
@@ -390,5 +449,6 @@ function threedRenderSchedule()
 }
 
 add_shortcode('threed_shows', 'threedRenderSchedule');
+
 
 ?>
