@@ -52,7 +52,6 @@ function getCurrentShow() {
 	$tz = 'Australia/Adelaide';
 	$timezone = new DateTimeZone($tz);
 	$dt = new DateTime();
-	$dt->setTimestamp($currentTime);
 	$dt->setTimeZone($timezone);
 
 	$time = $dt->format('U');
@@ -360,11 +359,11 @@ function threedRenderSchedule()
 			border-style: solid;
 			width: 14.2%;
 			height: 80px;
-
+}
 			.threed_schedule table {
 				width: 100%;
 }
-} 
+ 
 
 .threed_schedule p {
 	margin: 0px;
@@ -403,7 +402,6 @@ function threedRenderSchedule()
 
 	$currentShow = getCurrentShow();
 
-	echo $currentShow;
 	for ($i=$startTime; $i <= $endTime; $i += $increment)
 	{
 		$friendly = strftime("%k:%M", $i);

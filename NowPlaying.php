@@ -12,7 +12,6 @@ class NowPlaying extends WP_Widget {
 		$tz = 'Australia/Adelaide';
 		$timezone = new DateTimeZone($tz);
 		$dt = new DateTime();
-		$dt->setTimestamp($currentTime);
 		$dt->setTimeZone($timezone);
 
 		$time = $dt->format('U');
