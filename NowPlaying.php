@@ -68,7 +68,7 @@ class NowPlaying extends WP_Widget {
 				bloginfo('template_directory');
 				echo '/images/NoImage.png" alt="No Show Art"/>';
 			}
-			echo '<span class="schedule_show"><a href="' . get_permalink(get_the_ID()) . '">' . get_the_title() . '</a></span>';
+			echo '<br><span class="schedule_show"><a href="' . get_permalink(get_the_ID()) . '">' . get_the_title() . '</a></span>';
 			echo ' with ' . get_post_meta(get_the_ID(), 'threed_show_hosts', true);
 			echo '</div>';
 			//echo '<p class="schedule_time">' . threedFriendlyTime( get_post_meta(get_the_ID(), 'threed_show_start', true)) . ' - ' . 
