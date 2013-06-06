@@ -100,7 +100,7 @@ function ThreeDCreateTop20Type() {
 			),
 			'public' => true,
 			'has_archive' => true,
-			'supports' => array(''),
+			'supports' => array('comments'),
 			'rewrite' => array('slug' => 'top20')
 		)
 	);
@@ -110,7 +110,7 @@ function ThreeDCreateTop20Type() {
 add_filter('name_save_pre', 'save_name');
 add_filter('title_save_pre', 'save_name');
 function save_name($my_post_name) {
-	if ($_POST['post_type'] == 'threed_top20') {
+	if (isset ($_POST['post_type']) && $_POST['post_type'] == 'threed_top20') {
 		$name = $_POST['threed_year'];
 		$name .= '-' . $_POST['threed_month'];
 		$name .= '-' . $_POST['threed_day'];
@@ -152,7 +152,7 @@ function ThreeDTop20SaveMeta($post_id) {
 	for ($i = 1; $i<=21; $i++) {
 		$artist = $_POST["artist$i"];
 		$release= $_POST["release$i"];
-		$origin = $_POST["origin$i"];
+		$origin = (isset($_POST["origin$i"])) ? $_POST["origin$i"] : '';
 		$lastweek= $_POST["lastweek$i"];
 
 		update_post_meta($post_id, "artist$i", $artist);
@@ -162,3 +162,34 @@ function ThreeDTop20SaveMeta($post_id) {
 
 	}
 }
+
+add_filter( 'wp_get_nav_menu_items', 'replace_placeholder_nav_menu_item_with_top20', 10, 3 );
+ 
+// Replaces a custom URL placeholder with the URL to the latest post
+function replace_placeholder_nav_menu_item_with_top20( $items, $menu, $args ) {
+
+	// Loop through the menu items looking for placeholder(s)
+	foreach ( $items as $item ) {
+
+		// Is this the placeholder we're looking for?
+		if ( strpos($item->url, '#top20') === false )
+			continue;
+
+		// Get the latest post
+		$latestpost = get_posts( array(
+			'numberposts' => 1,
+			'post_type' => 'threed_top20'
+		) );
+
+		if ( empty( $latestpost ) )
+			continue;
+
+		// Replace the placeholder with the real URL
+		$item->url = get_permalink( $latestpost[0]->ID );
+	}
+
+	// Return the modified (or maybe unmodified) menu items array
+	return $items;
+}
+
+?>
