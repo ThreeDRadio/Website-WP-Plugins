@@ -30,6 +30,7 @@ add_action('admin_print_styles', 'threedDiscounterAdminStyles');
 
 // get images to show!
 add_image_size('admin-list-thumb', 60, 60, false);
+add_image_size('discounter-thumb', 120, 120, false);
 //add_filter('manage_threed_discounter_posts_columns', 'threedAddDiscounterThumbnailColumn', 5);
 //function threedAddDiscounterThumbnailColumn($cols)
 //{
@@ -305,4 +306,29 @@ function threedDiscounterThumbnailColumnWidth()
 		</style>';
 }
 
+function threedRenderDiscounters()
+{
+	$args = array('post_type' => 'threed_discounter', 
+		'post_status' => 'publish', 
+		'nopaging' => true,
+		'orderby' => 'title',
+		'order' => 'asc',
+	);
+
+	$loop = new WP_Query($args);
+
+	while ($loop->have_posts())
+	{
+		$loop->the_post();
+		echo '<header class="entry-header">';
+		echo '<h2 class="entry-title">' . get_the_title() . '</h2>';
+		echo the_post_thumbnail('discounter-thumb');
+		echo '</header>';
+
+	}
+
+}
+
+
+add_shortcode('threed_discounters', 'threedRenderDiscounters');
 ?>
