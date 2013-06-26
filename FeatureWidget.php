@@ -10,9 +10,10 @@ class FeatureWidget extends WP_Widget {
 		$qargs = array('post_type' => 'threed_feature', 
 			          'post_status' => 'publish', 
 //			          'meta_key' => 'threed_show_day', 
-			          'nopaging' => true,
+			          'nopaging' => false,
 					  'orderby' => 'date',
-					  'order' => 'asc',
+					  'order' => 'desc',
+					  'posts_per_page' => 1,
 					  'meta_query' => array(
 						  				'relation' => 'AND',
 						  				array(
@@ -57,9 +58,10 @@ class FeatureWidget extends WP_Widget {
 		$qargs = array('post_type' => 'threed_feature', 
 			          'post_status' => 'publish', 
 //			          'meta_key' => 'threed_show_day', 
-			          'nopaging' => true,
+			          'nopaging' => false,
+					  'posts_per_page' => 1,
 					  'orderby' => 'date',
-					  'order' => 'asc',
+					  'order' => 'desc',
 					  'meta_query' => array(
 						  				'relation' => 'AND',
 						  				array(
