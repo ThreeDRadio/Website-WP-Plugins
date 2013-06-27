@@ -30,7 +30,8 @@ add_action('admin_print_styles', 'threedDiscounterAdminStyles');
 
 // get images to show!
 add_image_size('admin-list-thumb', 60, 60, false);
-add_image_size('discounter-thumb', 120, 120, false);
+add_image_size('discounter-thumb', 80, 80, false);
+add_image_size('discounter-big', 180, 180, false);
 //add_filter('manage_threed_discounter_posts_columns', 'threedAddDiscounterThumbnailColumn', 5);
 //function threedAddDiscounterThumbnailColumn($cols)
 //{
