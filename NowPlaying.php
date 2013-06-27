@@ -56,6 +56,16 @@ class NowPlaying extends WP_Widget {
 		echo '/images/NowPlaying.png" alt="Now Playing" class="threed-sidebar-heading"/>';
 	   	echo $after_title;
 
+		if (!$ploop->have_posts()) {
+			echo '<div class="now_playing">';
+				echo '<img src="';
+				bloginfo('template_directory');
+				echo '/images/NoImage.png" alt="No Show Art"/>';
+			echo '<br><span class="schedule_show">Three D Blend</span>';
+			echo '</div>';
+
+		}
+
 		while ($ploop->have_posts())
 		{
 			echo '<div class="now_playing">';
