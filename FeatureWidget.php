@@ -54,6 +54,7 @@ class FeatureWidget extends WP_Widget {
 			echo '</div>';
 			//echo '<p class="schedule_time">' . threedFriendlyTime( get_post_meta(get_the_ID(), 'threed_show_start', true)) . ' - ' . 
 			//	threedFriendlyTime(get_post_meta(get_the_ID(), 'threed_show_end', true)) . '</p>';
+			break;
 		}
 		$qargs = array('post_type' => 'threed_feature', 
 			          'post_status' => 'publish', 
@@ -93,6 +94,7 @@ class FeatureWidget extends WP_Widget {
 			echo '</div>';
 			//echo '<p class="schedule_time">' . threedFriendlyTime( get_post_meta(get_the_ID(), 'threed_show_start', true)) . ' - ' . 
 			//	threedFriendlyTime(get_post_meta(get_the_ID(), 'threed_show_end', true)) . '</p>';
+			break;
 		}
 		echo $after_widget;
 	}
