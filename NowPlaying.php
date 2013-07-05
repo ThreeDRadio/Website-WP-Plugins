@@ -20,6 +20,19 @@ class NowPlaying extends WP_Widget {
 		$days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
 		$secondsSinceMidnight = $dt->format('G')*60*60 + $dt->format('i') * 60 + $dt->format('s');
 
+		// if we are before 6am, we are technically on the previous day! 
+		if ($dt->format('G') < 6) {
+			if ($day == 0) {
+				$day = 6;
+			}
+			else {
+				$day = $day-1;
+			}
+
+			// Also, instead of being 0-24, we are now 24-30. GAR!
+			$secondsSinceMidnight += 24*60*60;
+		}
+
 		$qargs = array('post_type' => 'threed_show', 
 			          'post_status' => 'publish', 
 			          'meta_key' => 'threed_show_day', 
