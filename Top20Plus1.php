@@ -59,7 +59,7 @@ function threedTop20MetaBox()
 
 	echo '<h2>Entries:</h2>';
 	echo '<table class="form-table">';
-	echo '<tr><th>Position</th><th>Artist</th><th>Release</th><th>Origin</th><th>Last Week Pos</th></tr>';
+	echo '<tr><th>#</th><th>Artist</th><th>Release</th><th>Origin</th><th>LW</th></tr>';
 	for ($i = 1; $i<=21; $i++) {
 		$artist = get_post_meta($post->ID, "artist$i", true);
 		$release = get_post_meta($post->ID, "release$i", true);
@@ -67,14 +67,14 @@ function threedTop20MetaBox()
 		$lastweek= get_post_meta($post->ID, "lastweek$i", true);
 
 		echo '<tr>';
-		echo '<td width="10">' . $i . '</td>';
-		echo '<td><input type="text" name="artist', $i , '"  id="artist', $i, '" value="', $artist, '" size="30"/></td>';
-		echo '<td><input type="text" name="release', $i , '" id="release', $i, '" value="', $release, '" size="30"/></td>';
+		echo '<td width="2">' . $i . '</td>';
+		echo '<td><input type="text" name="artist', $i , '"  id="artist', $i, '" value="', $artist, '" size="25"/></td>';
+		echo '<td><input type="text" name="release', $i , '" id="release', $i, '" value="', $release, '" size="25"/></td>';
 
-		echo '<td>';
+		echo '<td width="100">';
 		echo '<input type="radio" name="origin', $i, '" id="Local" value="Local"',         $origin == "Local"         ? ' checked="checked"' : '', ' /><label for="Local"> Local</label><br>';
-		echo '<input type="radio" name="origin', $i, '" id="Australian" value="Australian"',    $origin == "Australian"    ? ' checked="checked"' : '', ' /><label for="Australian"> Australian</label><br>';
-		echo '<input type="radio" name="origin', $i, '" id="International" value="International"', $origin == "International" ? ' checked="checked"' : '', ' /><label for="International"> International</label></td>';
+		echo '<input type="radio" name="origin', $i, '" id="Australian" value="Australian"',    $origin == "Australian"    ? ' checked="checked"' : '', ' /><label for="Australian"> Aus</label><br>';
+		echo '<input type="radio" name="origin', $i, '" id="International" value="International"', $origin == "International" ? ' checked="checked"' : '', ' /><label for="International"> Int</label></td>';
 
 		echo '<td><input type="text" name="lastweek', $i , '" id="lastweek', $i, '" value="', $lastweek, '" size="5"/></td>';
 
