@@ -26,6 +26,15 @@ add_filter('title_save_pre','ThreeDTop101SaveName');
 add_filter('name_save_pre', 'ThreeDTop101EntrySaveName');
 add_filter('title_save_pre','ThreeDTop101EntrySaveName');
 
+// Show posts of 'post', 'page' and 'movie' post types on home page
+add_action( 'pre_get_posts', 'add_my_post_types_to_query' );
+
+function add_my_post_types_to_query( $query ) {
+    if ( is_home() && $query->is_main_query() )
+        $query->set( 'post_type', array( 'post', 'page', 'threed_top101_entry' ) );
+    return $query;
+}
+
 function ThreeDTop101SaveName($my_post_name) {
 	if (isset ($_POST['post_type']) && $_POST['post_type'] == 'threed_top101_chart') {
 		$name = 'Top 100+1 for ' . $_POST['threed_top101_year'];
@@ -147,6 +156,7 @@ function ThreeDTop101EntryPrintMetaBox() {
 	$artist = get_post_meta($post->ID,   "threed_top101_artist", true);
 	$release = get_post_meta($post->ID,   "threed_top101_release", true);
 	$position = get_post_meta($post->ID,   "threed_top101_position", true);
+	$origin = get_post_meta($post->ID,   "threed_top101_origin", true);
 
 	echo '<input type="hidden" name="threed_top101_entry_meta_box_nonce" value="', wp_create_nonce(basename(__FILE__)), '" />';
 	echo '<table class="form-table">';
@@ -177,10 +187,20 @@ function ThreeDTop101EntryPrintMetaBox() {
     echo '</tr><tr>';
     echo '<td>Release</td>';
     echo '<td><input type="text" name="threed_top101_release"  id="threed_top101_release" value="', $release, '" size="45"/></td>';
+    echo '</tr><tr>';
+    echo '<td>Origin</td>';
+    echo '<td>';
+        
+		echo '<input type="radio" name="threed_top101_origin" id="Local" value="Local"',         $origin == "Local"         ? ' checked="checked"' : '', ' /><label for="Local"> Local</label><br>';
+		echo '<input type="radio" name="threed_top101_origin" id="Australian" value="Australian"',    $origin == "Australian"    ? ' checked="checked"' : '', ' /><label for="Australian"> Australian</label><br>';
+		echo '<input type="radio" name="threed_top101_origin" id="International" value="International"', $origin == "International" ? ' checked="checked"' : '', ' /><label for="International"> International</label>';
+        
+        
+        echo '</td>';
     echo '</tr></table>';
 }
 
-function ThreedTop101EntryMeta($post_id) {
+function ThreedTop101SaveMeta($post_id) {
 	// verify nonce
 	if (!isset($_POST['threed_top101_meta_box_nonce']) || !wp_verify_nonce($_POST['threed_top101_meta_box_nonce'], basename(__FILE__))) {
 		return $post_id;
@@ -224,10 +244,12 @@ function ThreedTop101EntrySaveMeta($post_id) {
 	$position=  $_POST["threed_top101_position"];
 	$artist =  $_POST["threed_top101_artist"];
 	$release =  $_POST["threed_top101_release"];
+	$origin =  $_POST["threed_top101_origin"];
 
 	update_post_meta($post_id, "threed_top101_chart_parent", $chart);
 	update_post_meta($post_id, "threed_top101_position", $position);
 	update_post_meta($post_id, "threed_top101_artist", $artist);
 	update_post_meta($post_id, "threed_top101_release", $release);
+	update_post_meta($post_id, "threed_top101_origin", $origin);
 }
 
