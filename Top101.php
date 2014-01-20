@@ -59,9 +59,9 @@ function ThreeDCreateTop101ChartType() {
 				'name' => __( 'Top 101 Charts' ),
 				'singular_name' => __( 'Chart' ),
 				'add_new' => _x('Add New', 'threed_top101_chart'),
-				'add_new_item' => __('Add Chart'),
+				'add_new_item' => __('Add Top 101 Chart'),
 				'edit_item' => 'Edit Chart',
-				'new_item' => 'New Chart',
+				'new_item' => 'New Top 101 Chart',
 				'view_item' => 'View Chart',
 				'search_item' => 'Search Top 100+1',
 				'not_found' => 'No charts found'
@@ -83,9 +83,9 @@ function ThreeDCreateTop101EntryType() {
 				'name' => __( 'Top 101 Entries' ),
 				'singular_name' => __( 'Entry' ),
 				'add_new' => _x('Add New', 'threed_top101_entry'),
-				'add_new_item' => __('Add Entry'),
+				'add_new_item' => __('Add Top101 Entry'),
 				'edit_item' => 'Edit Entry',
-				'new_item' => 'New Entry',
+				'new_item' => 'New Top 101 Entry',
 				'view_item' => 'View Entry',
 				'search_item' => 'Search Top 100+1',
 				'not_found' => 'No entries found'
